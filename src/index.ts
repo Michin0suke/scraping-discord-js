@@ -30,7 +30,7 @@ client.on('ready', async () => {
 })
 
 client.on('message', async message => {
-  // const targetUserId = message.mentions.members.first()?.id
+  const targetUserId = message.mentions.members.first()?.id
   const authorUserId = message.author.id
   const botUserId = client.user.id
 
@@ -38,7 +38,7 @@ client.on('message', async message => {
     return // 無限ループを発生させないため（念の為）
   }
 
-  // if (targetUserId !== botUserId) return
+  if (targetUserId !== botUserId) return
 
   // タスクを新規作成
   if (await addTask(message)) return
