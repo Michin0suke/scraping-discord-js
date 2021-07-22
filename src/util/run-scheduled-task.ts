@@ -22,7 +22,7 @@ export const runScheduledTask = async (client: Client, taskId: number) => {
 
   const thisChannel = (client.channels.cache.get(task.channel.id) as TextChannel)
 
-  thisChannel.send(`IDが${taskId}のタスクを実行中（次は${task.intervalMinutes}分後`)
+  // thisChannel.send(`IDが${taskId}のタスクを実行中（次は${task.intervalMinutes}分後`)
 
   try {
     const fetchedArticles:{
