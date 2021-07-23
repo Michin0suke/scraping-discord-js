@@ -9,39 +9,45 @@ export const init = async (message: Message): Promise<boolean> => {
     return false
   }
 
-  const thisChannel = message.channel as TextChannel
-
-  if (await getRepository(DiscordChannel).findOne({ id: thisChannel.id })) {
-    thisChannel.send('このチャンネルはすでに登録されています。')
+  if (await getRepository(DiscordChannel).findOne({ id: message.channel.id })) {
+    message.channel.send('このチャンネルはすでに登録されています。')
     return true
+  }
+
+  if (!await getRepository(DiscordChannel).findOne({ id: message.guild.id })) {
+    const server = new DiscordServer()
+    server.id = message.guild.id
+    server.name = message.guild.name
+    await getRepository(DiscordServer).save(server)
   }
 
   const channel = new DiscordChannel()
   const server = new DiscordServer()
 
-  channel.id = thisChannel.id
-  channel.name = thisChannel.name
+  channel.id = message.channel.id
+  channel.name = (message.channel as TextChannel).name
 
   server.id = message.guild.id
   server.name = message.guild.nameAcronym
   channel.server = server
 
+  await getRepository(DiscordServer).save(server)
   const savedChannelEntity = await getRepository(DiscordChannel).save(channel)
 
   if (savedChannelEntity) {
-    thisChannel.send(
+    message.channel.send(
       '以下の内容で登録しました。\n' +
         '```\n' +
         table([
-          ['サーバＩＤ', `${message.guild.nameAcronym}`],
-          ['サーバ名', `${message.guild.id}`],
-          ['チャンネルＩＤ', `${thisChannel.id}`],
-          ['チャンネル名', `${thisChannel.name}`]
+          ['サーバＩＤ', `${message.guild.id}`],
+          ['サーバ名', `${message.guild.name}`],
+          ['チャンネルＩＤ', `${message.channel.id}`],
+          ['チャンネル名', `${(message.channel as TextChannel).name}`]
         ]).replace(/ /g, '　') +
         '```'
     )
   } else {
-    thisChannel.send('データの登録に失敗しました。')
+    message.channel.send('データの登録に失敗しました。')
   }
   return true
 }
