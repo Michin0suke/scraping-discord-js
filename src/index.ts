@@ -40,6 +40,14 @@ client.on('message', async message => {
 
   if (targetUserId !== botUserId) return
 
+  const commandMatch = message.content.match(/(?<= ).+/ms)
+  if (!commandMatch) {
+    message.channel.send('コマンドを検出できませんでした。\n利用できるコマンド一覧は、`ヘルプ`で確認できます。')
+    return
+  }
+  message.content = commandMatch[0]
+  message.content.replace(/^ＩＤ/, 'ID')
+
   // タスクを新規作成
   if (await addTask(message)) return
 
