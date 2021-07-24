@@ -7,7 +7,7 @@ import { getChannelEntity } from '../util/get-channel-entity'
 export const addTask = async (
   message: Message
 ): Promise<boolean> => {
-  const taskDescriptionMatch = message.content.match(/.+(?=するタスクを追加)/)
+  const taskDescriptionMatch = message.content.match(/.+(?=するタスクを(追加|作成|登録))/)
 
   if (!taskDescriptionMatch) {
     return false
@@ -18,7 +18,7 @@ export const addTask = async (
     return true
   }
 
-  if (message.content.match(/〜するタスクを追加/)) {
+  if (message.content.match(/〜するタスクを(追加|作成|登録)/)) {
     message.channel.send(
       '〜の部分には、タスクの説明を付与してください。\n' +
       '例)\n' +
