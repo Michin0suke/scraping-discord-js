@@ -57,6 +57,6 @@ export const taskRouter = async (
   if (await addProgram(message)) return true
   if (await setTaskInterval(message, task)) return true
 
-  message.channel.send('コマンドを検出できませんでした。\n利用できるコマンド一覧は、`ヘルプ`で確認できます。')
+  message.channel.send('コマンドを検出できませんでした。\n利用できるコマンド一覧は、`ヘルプ`で確認できます')
   return true
 }

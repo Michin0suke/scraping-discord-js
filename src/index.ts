@@ -40,13 +40,13 @@ client.on('message', async message => {
 
   if (targetUserId !== botUserId) return
 
-  const commandMatch = message.content.match(/(?<= ).+/ms)
+  const commandMatch = message.content.match(/(?<= +).+/ms)
   if (!commandMatch) {
     message.channel.send('コマンドを検出できませんでした。\n利用できるコマンド一覧は、`ヘルプ`で確認できます。')
     return
   }
   message.content = commandMatch[0]
-  message.content.replace(/^ＩＤ/, 'ID')
+  message.content = message.content.replace(/^ＩＤ/, 'ID')
 
   // タスクを新規作成
   if (await addTask(message)) return
@@ -71,11 +71,13 @@ client.on('message', async message => {
   // hello
   if (await hello(client, message)) return
 
+  // サンプルプログラムを表示
   if (await showSampleProgram(message)) return
 
+  // 対話的にプログラムを実行する
   if (await interactiveRunCode(message)) return
 
-  message.channel.send('コマンドを検出できませんでした。\n利用できるコマンド一覧は、`ヘルプ`で確認できます。')
+  message.channel.send('コマンドを検出できませんでした。\n利用できるコマンド一覧は、`ヘルプ`で確認できます！')
 })
 
 createConnection().then(() => {
