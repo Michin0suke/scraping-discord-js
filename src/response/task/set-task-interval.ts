@@ -8,8 +8,6 @@ export const setTaskInterval = async (message: Message, task: ScheduledTask): Pr
   if (!minutesMatch) return false
 
   const intervalMinutes = parseInt(zenkaku2Hankaku(minutesMatch[0]), 10)
-  console.log(zenkaku2Hankaku(minutesMatch[0]))
-  console.log(intervalMinutes)
   if (!intervalMinutes) {
     message.channel.send('インターバルの分数は、1以上の整数である必要があります。')
     return true

@@ -7,12 +7,12 @@ export type ArticleInfo = {
 
 function assertArtistInfo (obj: any): asserts obj is ArticleInfo {
   if (!obj) throw new Error()
-  if (typeof obj.title !== 'string') throw new Error()
-  if (typeof obj.url !== 'string') throw new Error()
+  if (typeof obj.title !== 'string') throw new Error('returnされたオブジェクトにtitleプロパティが含まれていないか、titleプロパティが文字列ではありません。')
+  if (typeof obj.url !== 'string') throw new Error('returnされたオブジェクトにurlプロパティが含まれていないか、urlプロパティが文字列ではありません。')
 }
 
 function assertArtistInfoArr (obj: any): asserts obj is ArticleInfo[] {
-  if (!Array.isArray(obj)) throw new Error()
+  if (!Array.isArray(obj)) throw new Error('returnされたオブジェクトが配列ではありません。')
   obj.forEach(i => assertArtistInfo(i))
 }
 

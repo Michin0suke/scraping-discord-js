@@ -23,7 +23,7 @@ export const runScheduledTask = async (client: Client, taskId: number) => {
   // thisChannel.send(`IDが${taskId}のタスクを実行中（次は${task.intervalMinutes}分後`)
 
   try {
-    const fetchedArticles = runScrapCode(task.program)
+    const fetchedArticles = await runScrapCode(task.program)
 
     if (!Array.isArray(fetchedArticles)) {
       thisChannel.send(`IDが${taskId}のタスクの実行時にエラーが発生したため、ステータスをstoppedに変更しました。\n詳しくはログを確認してください。`)
@@ -38,14 +38,14 @@ export const runScheduledTask = async (client: Client, taskId: number) => {
       !UrlsInDatabase.includes(article.url)
     ))
 
-    if (UrlsInDatabase.length === 0) {
-      const latestArticle = addedArticles[-MAX_SEND_AT_ONCE_ON_FIRST]
-      thisChannel.send(`${latestArticle.title}\n${latestArticle.url}`)
-    } else {
-      addedArticles.slice(-MAX_SEND_AT_ONCE).forEach(article => {
-        thisChannel.send(`${article.title}\n${article.url}`)
-      })
-    }
+    if (addedArticles.length === 0) return
+
+    // 初回時（データベースにすでに記事があるとき）と２回目以降で最大送信数が違う
+    const maxSend = UrlsInDatabase.length === 0 ? MAX_SEND_AT_ONCE_ON_FIRST : MAX_SEND_AT_ONCE
+
+    addedArticles.slice(-maxSend).forEach(article => {
+      thisChannel.send(`${article.title}\n${article.url}`)
+    })
 
     for (const addedArticle of addedArticles) {
       const article = new Article()

@@ -38,9 +38,9 @@ export const addTask = async (
   }
   task.channel = channel
   task.description = taskDescription + 'する'
-  await getRepository(ScheduledTask).save(task)
+  const savedTask = await getRepository(ScheduledTask).save(task)
 
-  message.channel.send(`${taskDescription}するタスクを追加しました。\n追加したタスク一覧は\`ステータス\`コマンドで確認できます。`)
+  message.channel.send(`${taskDescription}するタスクを追加しました。IDは${savedTask.id}です。\n作成したタスクにプログラムを追加してから、タスクを起動しましょう。\n追加したタスク一覧は\`ステータス\`コマンドで確認できます。`)
 
   return true
 }
