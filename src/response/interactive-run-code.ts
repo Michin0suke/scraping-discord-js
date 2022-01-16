@@ -1,6 +1,8 @@
 import { Message } from 'discord.js'
 import { runCode } from '../util/run-code'
 
+const MAX_RESULT_MESSAGE = 3
+
 export const interactiveRunCode = async (
   message: Message
 ): Promise<boolean> => {
@@ -11,7 +13,7 @@ export const interactiveRunCode = async (
 
   try {
     const result = await runCode(code)
-    const separatedResult = JSON.stringify(result, null, 4).match(/.{1,1900}/gms)
+    const separatedResult = JSON.stringify(result, null, 4).match(/.{1,1900}/gms).slice(0, MAX_RESULT_MESSAGE - 1)
     separatedResult.forEach(result => {
       message.channel.send('```\n' + result + '\n```')
     })

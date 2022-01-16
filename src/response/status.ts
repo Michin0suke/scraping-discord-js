@@ -20,7 +20,7 @@ export const status = async (
 
   if (!server) {
     message.channel.send(
-      'サーバが登録されていません。'
+      'サーバにデータが存在しません。'
     )
     return true
   }

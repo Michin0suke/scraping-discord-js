@@ -6,7 +6,6 @@ import { ScheduledTask } from './entity/ScheduledTask'
 import { help } from './response/help'
 import { hello } from './response/hello'
 import { status } from './response/status'
-import { init } from './response/init'
 import { unsubscribe } from './response/unsubscribe'
 import { taskRouter } from './response/task-router'
 import { addTask } from './response/add-task'
@@ -14,6 +13,7 @@ import { runScheduledTask } from './util/run-scheduled-task'
 import { statusInChannel } from './response/status-in-channel'
 import { interactiveRunCode } from './response/interactive-run-code'
 import { showSampleProgram } from './response/show-sample-program'
+import { deleteServer } from './response/delete-server'
 
 const client = new Client()
 
@@ -59,11 +59,14 @@ client.on('message', async message => {
   // ヘルプを表示
   if (await help(message)) return
 
-  // チャンネルの登録を解除
+  // チャンネルを削除
   if (await unsubscribe(message)) return
 
+  // サーバを削除
+  if (await deleteServer(message)) return
+
   // チャンネルを登録
-  if (await init(message)) return
+  // if (await init(message)) return
 
   // ステータスを表示
   if (await status(message)) return

@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm'
 import { ScheduledTask } from '../entity/ScheduledTask'
 import { zenkaku2Hankaku } from '../util/zenkaku2hankaku'
 import { addProgram } from './task/add-program'
+import { changeChannel } from './task/change-channel'
 import { deleteProgram } from './task/delete-program'
 import { deleteTask } from './task/delete-task'
 import { disableTask } from './task/disable-task'
@@ -52,6 +53,8 @@ export const taskRouter = async (
   if (await showTaskLog(message, task)) return true
   if (await showTaskProgram(message, task)) return true
   if (await deleteProgram(message, task)) return true
+  // タスクのチャンネルを紐付け
+  if (await changeChannel(message, task)) return true
 
   // プログラムを追加
   if (await addProgram(message)) return true

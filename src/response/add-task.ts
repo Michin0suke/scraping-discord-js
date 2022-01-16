@@ -1,6 +1,5 @@
-import { Message } from 'discord.js'
+import { Message, TextChannel } from 'discord.js'
 import { getRepository } from 'typeorm'
-import { DiscordChannel } from '../entity/DiscordChannel'
 import { ScheduledTask } from '../entity/ScheduledTask'
 import { getChannelEntity } from '../util/get-channel-entity'
 
@@ -13,10 +12,10 @@ export const addTask = async (
     return false
   }
 
-  if (!(await getRepository(DiscordChannel).findOne())) {
-    message.channel.send('最初に`init`コマンドを実行してください。')
-    return true
-  }
+  // if (!(await getRepository(DiscordChannel).findOne())) {
+  //   message.channel.send('最初に`init`コマンドを実行してください。')
+  //   return true
+  // }
 
   if (message.content.match(/〜するタスクを(追加|作成|登録)/)) {
     message.channel.send(
@@ -31,7 +30,7 @@ export const addTask = async (
   const taskDescription = taskDescriptionMatch[0]
 
   const task = new ScheduledTask()
-  const channel = await getChannelEntity(message.channel)
+  const channel = await getChannelEntity(message.channel as TextChannel)
   if (!channel) {
     message.channel.send('このチャンネルは登録されていません。\n' + '最初にチャンネルの登録を行ってください。')
     return true

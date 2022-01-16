@@ -1,12 +1,13 @@
-import { DMChannel, NewsChannel, TextChannel } from 'discord.js'
+import { TextChannel } from 'discord.js'
 import { getRepository } from 'typeorm'
 import { DiscordChannel } from '../entity/DiscordChannel'
+import { saveChannel } from './save-channel'
 
-export const getChannelEntity = async (channel: TextChannel | DMChannel | NewsChannel): Promise<DiscordChannel | undefined> => {
-  return getRepository(DiscordChannel)
-    .createQueryBuilder('channel')
-    .leftJoinAndMapMany('channel.scheduledTasks', 'channel.scheduledTasks', 'scheduledTasks')
-    .leftJoinAndMapMany('scheduledTasks.articles', 'scheduledTasks.articles', 'articles')
-    .where({ id: channel.id })
-    .getOne()
+export const getChannelEntity = async (channel: TextChannel): Promise<DiscordChannel | undefined> => {
+  const channelE = await getRepository(DiscordChannel)
+    .findOne(channel.id, { relations: ['server', 'scheduledTasks', 'scheduledTasks.articles'] })
+  if (!channelE) {
+    return saveChannel(channel)
+  }
+  return channelE
 }

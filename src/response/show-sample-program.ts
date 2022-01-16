@@ -36,4 +36,19 @@ $('.entry-title a').each((index, elem) => {
   })
 })
 return arr
-\`\`\``
+\`\`\`
+
+3. はてブの「vtuber」キーワードで10人以上にブックマークされた最新記事を取得する
+\`\`\`js
+const html = await fetch('https://b.hatena.ne.jp/search/text?q=vtuber&users=10').then(res => res.text())
+const $ = cheerio.load(html, null, false)
+const arr = []
+$('.centerarticle-entry-title').each((index, elem) => {
+  arr.push({
+    title: $('a', elem).text(),
+    url: $('a', elem).attr('href')
+  })
+})
+return arr
+\`\`\`
+`

@@ -1,6 +1,5 @@
-import { Message } from 'discord.js'
-import { getRepository } from 'typeorm'
-import { DiscordChannel } from '../entity/DiscordChannel'
+import { Message, TextChannel } from 'discord.js'
+import { getChannelEntity } from '../util/get-channel-entity'
 import { table } from '../util/textTable'
 
 export const statusInChannel = async (
@@ -10,12 +9,7 @@ export const statusInChannel = async (
     return false
   }
 
-  const channel = await getRepository(DiscordChannel)
-    .createQueryBuilder('channel')
-    .leftJoinAndMapMany('channel.scheduledTasks', 'channel.scheduledTasks', 'task')
-    .leftJoinAndMapMany('task.articles', 'task.articles', 'article')
-    .where('channel.id = :channelId', { channelId: message.channel.id })
-    .getOne()
+  const channel = await getChannelEntity(message.channel as TextChannel)
 
   if (!channel) {
     message.channel.send('チャンネルが登録されていません。')

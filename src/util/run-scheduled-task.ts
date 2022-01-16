@@ -61,7 +61,7 @@ export const runScheduledTask = async (client: Client, taskId: number) => {
     return
   }
 
-  const channelEntity = await getRepository(DiscordChannel).findOne()
+  const channelEntity = task.channel
   channelEntity.lastFetchedAt = new Date()
   getRepository(DiscordChannel).save(channelEntity)
 

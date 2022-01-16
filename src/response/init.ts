@@ -2,6 +2,7 @@ import { Message, TextChannel } from 'discord.js'
 import { getRepository } from 'typeorm'
 import { DiscordChannel } from '../entity/DiscordChannel'
 import { DiscordServer } from '../entity/DiscordServer'
+import { saveChannel } from '../util/save-channel'
 import { table } from '../util/textTable'
 
 export const init = async (message: Message): Promise<boolean> => {
@@ -20,19 +21,7 @@ export const init = async (message: Message): Promise<boolean> => {
     server.name = message.guild.name
     await getRepository(DiscordServer).save(server)
   }
-
-  const channel = new DiscordChannel()
-  const server = new DiscordServer()
-
-  channel.id = message.channel.id
-  channel.name = (message.channel as TextChannel).name
-
-  server.id = message.guild.id
-  server.name = message.guild.nameAcronym
-  channel.server = server
-
-  await getRepository(DiscordServer).save(server)
-  const savedChannelEntity = await getRepository(DiscordChannel).save(channel)
+  const savedChannelEntity = await saveChannel(message.channel as TextChannel)
 
   if (savedChannelEntity) {
     message.channel.send(
