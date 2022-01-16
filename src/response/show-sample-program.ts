@@ -51,4 +51,17 @@ $('.centerarticle-entry-title').each((index, elem) => {
 })
 return arr
 \`\`\`
+
+4. にじさんじ公式Twitterの最新投稿を取得する
+\`\`\`
+const json = await RSSHub.request('/twitter/user/nijisanji_app/excludeReplies=1&includeRts=0')
+const items = json.item
+const arr = items.map(item => {
+  return {
+    title: item.title,
+    url: item.link,
+  }
+})
+return arr
+\`\`\`
 `
