@@ -14,10 +14,10 @@ export class Article {
     @JoinColumn()
     task: ScheduledTask;
 
-    @Column({ nullable: false })
+    @Column({ nullable: false, length: '2047' })
     title: string;
 
-    @Column({ nullable: false })
+    @Column({ nullable: false, length: '2047' })
     url: string;
 
     @UpdateDateColumn()

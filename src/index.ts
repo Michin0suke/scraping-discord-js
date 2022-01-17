@@ -1,7 +1,7 @@
 import { Client } from 'discord.js'
 import { DISCORD_TOKEN } from '../config'
 import 'reflect-metadata'
-import { createConnection, getRepository } from 'typeorm'
+import { createConnection, getConnectionOptions, getRepository } from 'typeorm'
 import { ScheduledTask } from './entity/ScheduledTask'
 import { help } from './response/help'
 import { hello } from './response/hello'
@@ -83,6 +83,14 @@ client.on('message', async message => {
   message.channel.send('コマンドを検出できませんでした。\n利用できるコマンド一覧は、`ヘルプ`で確認できます！')
 })
 
-createConnection().then(() => {
-  client.login(DISCORD_TOKEN)
+getConnectionOptions().then(connectionOptions => {
+  const customOptions = Object.assign(connectionOptions,
+    {
+      type: 'mysql',
+      charset: 'utf8mb4_general_ci'
+    })
+
+  createConnection(customOptions).then(() => {
+    client.login(DISCORD_TOKEN)
+  })
 })
