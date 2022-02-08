@@ -6,6 +6,7 @@ import { table } from '../util/textTable'
 export const status = async (
   message: Message
 ): Promise<boolean> => {
+  // TODO: みやすく
   if (!message.content.match(/^(status|状況|ステータス)/)) {
     return false
   }

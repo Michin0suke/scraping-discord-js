@@ -14,6 +14,7 @@ export const interactiveRunCode = async (
   try {
     const result = await runCode(code)
     const separatedResult = JSON.stringify(result, null, 4).match(/.{1,1900}/gms).slice(0, MAX_RESULT_MESSAGE - 1)
+    console.log(separatedResult)
     separatedResult.forEach(result => {
       message.channel.send('```\n' + result + '\n```')
     })

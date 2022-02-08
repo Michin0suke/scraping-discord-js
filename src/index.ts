@@ -48,6 +48,9 @@ client.on('message', async message => {
   message.content = commandMatch[0]
   message.content = message.content.replace(/^ＩＤ/, 'ID')
 
+  // TODO: 全て起動
+  // TODO: 全て停止
+
   // タスクを新規作成
   if (await addTask(message)) return
 
