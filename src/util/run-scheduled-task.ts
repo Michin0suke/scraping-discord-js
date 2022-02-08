@@ -8,7 +8,7 @@ import { runScrapCode } from './run-scrap-code'
 import { stopTask } from './stop-task'
 
 const MAX_SEND_AT_ONCE_ON_FIRST = 1
-const MAX_SEND_AT_ONCE = 3
+const MAX_SEND_AT_ONCE = 10
 
 const skipThisTime = (client: Client, task: ScheduledTask) => {
   setTimeout(() => {
